@@ -4,17 +4,15 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/netsuite http://www.mulesoft.org/schema/mule/netsuite/current/mule-netsuite.xsd">
-    <netsuite:config name="Netsuite_test" email="${netsuite.email}" password="${netsuite.password}" account="${netsuite.account}" roleId="${netsuite.roleId}" doc:name="Netsuite"/>
-    <sfdc:config name="Salesforce__test" username="${sfdc.username}" password="${sfdc.password}" securityToken="${sfdc.securityToken}" doc:name="Salesforce: Basic authentication"/>
     <sub-flow name="createOpportunityInSFDC" >
-        <sfdc:create config-ref="Salesforce__test" type="Opportunity" doc:name="Salesforce">
+        <sfdc:create config-ref="Salesforce" type="Opportunity" doc:name="Salesforce">
             <sfdc:objects ref="#[payload]"/>
         </sfdc:create>
         <logger message="Opportunity created in SFDC!" level="INFO" doc:name="Logger"/>
 
     </sub-flow>
     <sub-flow name="createOpportunityInNetsuite" >
-        <netsuite:add-record config-ref="Netsuite_test" recordType="OPPORTUNITY" doc:name="Netsuite">
+        <netsuite:add-record config-ref="Netsuite" recordType="OPPORTUNITY" doc:name="Netsuite">
             <netsuite:attributes ref="#[payload]"/>
         </netsuite:add-record>
         <logger message="Opportunity created in NetSuite!" level="INFO" doc:name="Logger"/>
@@ -22,13 +20,13 @@ http://www.mulesoft.org/schema/mule/netsuite http://www.mulesoft.org/schema/mule
     </sub-flow>
     
     <sub-flow name="deleteOpportunityFromSFDC" >
-        <sfdc:delete config-ref="Salesforce__test" doc:name="Salesforce">
+        <sfdc:delete config-ref="Salesforce" doc:name="Salesforce">
             <sfdc:ids ref="#[payload]"/>
         </sfdc:delete>
         <logger message="Opportunity deleted from SFDC!" level="INFO" doc:name="Logger"/>
     </sub-flow>
     <sub-flow name="deleteOpportunityFromNetsuite">
-        <netsuite:delete-record config-ref="Netsuite_test" doc:name="Netsuite">
+        <netsuite:delete-record config-ref="Netsuite" doc:name="Netsuite">
             <netsuite:record-ref ref="#[message.payload]"/>
         </netsuite:delete-record>
         <logger message="Opportunity deleted from NetSuite!" level="INFO" doc:name="Logger"/>

@@ -154,10 +154,10 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 
 #### NetSuite Connector configuration
 
-+ netsuite.email `email@example.com`
-+ netsuite.password `netsuite_password`
-+ netsuite.account `YHCtmLGOdrjkKvBruTKaiLan`
-+ netsuite.roleId `1`
++ nets.email `email@example.com`
++ nets.password `netsuite_password`
++ nets.account `YHCtmLGOdrjkKvBruTKaiLan`
++ nets.roleId `1`
 
 #### SMTP Services configuration
 
@@ -214,11 +214,11 @@ Criteria and format applied:
 
 ### Format Output Flow
 
-[Java Transformer](http://www.mulesoft.org/documentation/display/current/Java+Transformer+Reference) responsible for sorting the list of users in the following order:
++ [Java Transformer](http://www.mulesoft.org/documentation/display/current/Java+Transformer+Reference) responsible for sorting the list of users in the following order:
 
-1. Opportunities only in SalesForce
-2. Opportunities only in NetSuite
-3. Opportunities in both SalesForce and NetSuite
+	1. Opportunities only in SalesForce
+	2. Opportunities only in NetSuite
+	3. Opportunities in both SalesForce and NetSuite
 
 All records ordered alphabetically by name within each category.
 If you want to change this order then the *compare* method should be modified.

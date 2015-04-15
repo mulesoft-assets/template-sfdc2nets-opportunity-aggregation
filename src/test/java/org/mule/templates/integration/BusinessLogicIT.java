@@ -61,7 +61,7 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 		Properties props = new Properties();
 		props.load(new FileInputStream(new File(PATH_TO_TEST_PROPERTIES)));
 		EMAIL_BODY = props.getProperty("mail.body");
-		TEST_CUSTOMER_ID = props.getProperty("netsuite.test.customerId");
+		TEST_CUSTOMER_ID = props.getProperty("nets.test.customerId");
 		
 		createTestOpportunityInSFDC();
 		createTestOpportunityInNetsuite();
