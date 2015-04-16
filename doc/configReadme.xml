@@ -19,12 +19,6 @@ To make this Anypoint Template run, there are certain preconditions that must be
 ]]>
 		</section>
 		
-		<section id="nets_dst">
-<![CDATA[
-NetSuite does not allow concurrent API calls from the same account. Therefore, the NetSuite connector is configured to reconnect every 10 seconds until successful.
-]]>
-		</section>
-		
 		<section id="running_on_cloudhub">
 <![CDATA[
 Once your app is all set up and started, supposing you choose as domain name `sfdc2nets-opportunity-aggregation` to trigger the use case, you just need to hit `http://sfdc2nets-opportunity-aggregation.cloudhub.io/generatereport` and report will be sent to the e-mails configured.

@@ -88,7 +88,7 @@ column='486'
 
 ### As destination of data
 
-NetSuite does not allow concurrent API calls from the same account. Therefore, the NetSuite connector is configured to reconnect every 10 seconds until successful.
+There are no particular considerations for this Anypoint Template regarding Netsuite as data destination.
 
 
 
