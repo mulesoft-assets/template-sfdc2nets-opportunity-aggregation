@@ -26,7 +26,7 @@ http://www.mulesoft.org/schema/mule/netsuite http://www.mulesoft.org/schema/mule
         <scatter-gather doc:name="Scatter-Gather">
             <custom-aggregation-strategy class="org.mule.templates.transformers.OpportunitiesMergeAggregationStrategy"/>
             <sfdc:query config-ref="Salesforce" query="dsql:SELECT Id, Name, Amount FROM Opportunity" doc:name="query all opportunities from SalesForce"/>
-            <netsuite:query-records config-ref="Netsuite" query="dsql:SELECT projectedTotal, title, internalId, externalId
+            <netsuite:query-records config-ref="Netsuite" query="dsql:SELECT projectedTotal, title, internalId
 FROM OPPORTUNITY" doc:name="query all opportunities from Netsuite"/>        </scatter-gather>
     </sub-flow>
     <sub-flow name="formatOutputFlow">

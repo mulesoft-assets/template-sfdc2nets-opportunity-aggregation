@@ -32,7 +32,7 @@ For practical purposes this Template will generate the result in the format of a
 
 This Template should serve as a foundation for extracting data from two systems, aggregating data, comparing values of fields for the objects, and generating a report on the differences. 
 
-This implementation retrieves opportunities from both Salesforce and Netsuite instances, compares them (opportunities match if `externalId` of NetSuite Opportunity is the same as `Id` of SalesForce Opportunity), and generates a CSV file which shows opportunities in Salesforce, opportunities in NetSuite, and opportunities present in both systems. The report is then sent to a configured group of e-mail addresses.
+This implementation retrieves opportunities from both Salesforce and Netsuite instances, compares them (opportunities match if the names are equal), and generates a CSV file which shows opportunities in Salesforce, opportunities in NetSuite, and opportunities present in both systems. The report is then sent to a configured group of e-mail addresses.
 
 # Considerations <a name="considerations"/>
 
@@ -175,7 +175,7 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + attachment.name `opportunities_report`
 
 # API Calls <a name="apicalls"/>
-Salesforce imposes limits on the number of API Calls that can be made. However, we make API call to Salesforce only once during migration, so this is not something to worry about.
+Salesforce imposes limits on the number of API Calls that can be made. However, we make API call to Salesforce only once during migration.
 
 
 # Customize It!<a name="customizeit"/>
@@ -209,8 +209,8 @@ Mainly consisting of two calls (Queries), one to SalesForce, the other one to Ne
 [Java Transformer](http://www.mulesoft.org/documentation/display/current/Java+Transformer+Reference) is responsible for aggregating the results from the SalesForce and NetSuite instances.
 Criteria and format applied:
 
-+ Transformer receives a Mule Message with the two Invocation variables *opportunitiesFromSFDC* and *opportunitiesFromNetsuite* to result in List of Maps with keys: **Name**, **IDInSFDC**, **AmountInSFDC**, **IDInNetsuite**, **AmountInNetsuite**, **extIDInNetsuite**.
-+ Opportunities will be matched by their IDs. A record in Netsuite matches SFDC record if its *externalId*  is the same as SFDC record *Id*.
++ Transformer receives a Mule Message with the two Invocation variables *opportunitiesFromSFDC* and *opportunitiesFromNetsuite* to result in List of Maps with keys: **Name**, **IDInSFDC**, **AmountInSFDC**, **IDInNetsuite**, **AmountInNetsuite**.
++ Opportunities will be matched by names. A record in Netsuite matches SFDC record if the names are equal.
 
 ### Format Output Flow
 
@@ -223,7 +223,7 @@ Criteria and format applied:
 All records ordered alphabetically by name within each category.
 If you want to change this order then the *compare* method should be modified.
 
-+ CSV Report [DataMapper](http://www.mulesoft.org/documentation/display/current/Datamapper+User+Guide+and+Reference) transforming the List of Maps in CSV with headers **Name**, **IDInSFDC**, **AmountInSFDC**, **IDInNetsuite**, **AmountInNetsuite**, **extIDInNetsuite**.
++ CSV Report [DataMapper](http://www.mulesoft.org/documentation/display/current/Datamapper+User+Guide+and+Reference) transforming the List of Maps in CSV with headers **Name**, **IDInSFDC**, **AmountInSFDC**, **IDInNetsuite**, **AmountInNetsuite**.
 + An [Object to string transformer](http://www.mulesoft.org/documentation/display/current/Transformers) is used to set the payload as String.
 
 

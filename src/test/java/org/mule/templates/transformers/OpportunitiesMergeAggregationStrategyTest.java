@@ -80,14 +80,12 @@ public class OpportunitiesMergeAggregationStrategyTest extends AbstractTemplateT
 		both.put("AmountInSFDC", "500");
 		both.put("IDInNetsuite", "1");
 		both.put("AmountInNetsuite", "500");
-		both.put("extIDInNetsuite","1");
-
+		
 		Map<String, String> netsuiteOnly = createEmptyMergedRecord(2);
 		netsuiteOnly.put("IDInNetsuite", "2");
 		netsuiteOnly.put("Name", "SomeName_2");
 		netsuiteOnly.put("AmountInNetsuite", "500");
-		netsuiteOnly.put("extIDInNetsuite","2");
-
+		
 		List<Map<String, String>> expectedList = new ArrayList<Map<String, String>>();
 		expectedList.add(sfdcOnly);
 		expectedList.add(both);
@@ -108,7 +106,6 @@ public class OpportunitiesMergeAggregationStrategyTest extends AbstractTemplateT
 		opportunity.put("AmountInSFDC", "");
 		opportunity.put("IDInNetsuite", "");
 		opportunity.put("AmountInNetsuite", "");
-		opportunity.put("extIDInNetsuite", "");
 		return opportunity;
 
 	}
@@ -170,8 +167,7 @@ public class OpportunitiesMergeAggregationStrategyTest extends AbstractTemplateT
 		opportunity.put("internalId", new Integer(sequence).toString()); // irrelevant here - can be the same as externalId
 		opportunity.put("title", "SomeName_" + sequence);
 		opportunity.put("projectedTotal", "500");
-		opportunity.put("externalId", new Integer(sequence).toString());
-
+		
 		return opportunity;
 	}
 }

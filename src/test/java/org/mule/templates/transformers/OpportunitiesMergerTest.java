@@ -65,15 +65,13 @@ public class OpportunitiesMergerTest {
 		both.put("AmountInSFDC", "500");
 		both.put("IDInNetsuite", "1");
 		both.put("AmountInNetsuite", "500");
-		both.put("extIDInNetsuite","1");
-
+		
 		// only in NetSuite
 		Map<String, String> netsuiteOnly = createEmptyMergedRecord(2);
 		netsuiteOnly.put("IDInNetsuite", "2");
 		netsuiteOnly.put("Name", "SomeName_2");
 		netsuiteOnly.put("AmountInNetsuite", "500");
-		netsuiteOnly.put("extIDInNetsuite","2");
-
+		
 		List<Map<String, String>> expectedList = new ArrayList<Map<String, String>>();
 		expectedList.add(sfdcOnly);
 		expectedList.add(both);
@@ -94,7 +92,6 @@ public class OpportunitiesMergerTest {
 		opportunity.put("AmountInSFDC", "");
 		opportunity.put("IDInNetsuite", "");
 		opportunity.put("AmountInNetsuite", "");
-		opportunity.put("extIDInNetsuite", "");
 		return opportunity;
 	}
 
@@ -152,10 +149,9 @@ public class OpportunitiesMergerTest {
 	private Map<String, String> createNetsuiteOpportunity(int sequence) {
 		Map<String, String> opportunity = new HashMap<String, String>();
 
-		opportunity.put("internalId", new Integer(sequence).toString()); // irrelevant here - can be the same as externalId
+		opportunity.put("internalId", new Integer(sequence).toString()); 
 		opportunity.put("title", "SomeName_" + sequence);
 		opportunity.put("projectedTotal", "500");
-		opportunity.put("externalId", new Integer(sequence).toString());
 
 		return opportunity;
 	}

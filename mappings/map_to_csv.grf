@@ -8,7 +8,6 @@
 <Field __index="1" __sourcePath="{}/Opportunity/IDInNetsuite" containerType="SINGLE" label="IDInNetsuite" name="IDInNetsuite" type="string"/>
 <Field __index="0" __sourcePath="{}/Opportunity/IDInSFDC" containerType="SINGLE" label="IDInSFDC" name="IDInSFDC" type="string"/>
 <Field __index="4" __sourcePath="{}/Opportunity/Name" containerType="SINGLE" label="Name" name="Name" type="string"/>
-<Field __sourcePath="{}/Opportunity/extIDInNetsuite" containerType="SINGLE" label="extIDInNetsuite" name="extIDInNetsuite" type="string"/>
 </Record>
 </Metadata>
 <Metadata __referenceCounter="1" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _type="Output" id="00fab57f-a4ec-4e73-a14b-02f4da1a319b">
@@ -19,7 +18,6 @@
 <Field containerType="SINGLE" label="IDInNetsuite" name="IDInNetsuite" size="10" type="string"/>
 <Field containerType="SINGLE" eofAsDelimiter="true" label="AmountInNetsuite" name="AmountInNetsuite" size="10" type="string"/>
 <Field __artificialType="_id" name="__id" type="long"/>
-<Field containerType="SINGLE" label="extIDInNetsuite" name="extIDInNetsuite" type="string"/>
 </Record>
 </Metadata>
 <Dictionary>
@@ -36,7 +34,6 @@
   <Mapping cloverField="IDInNetsuite" trim="true" xpath="IDInNetsuite"/>
   <Mapping cloverField="IDInSFDC" trim="true" xpath="IDInSFDC"/>
   <Mapping cloverField="Name" trim="true" xpath="Name"/>
-  <Mapping cloverField="extIDInNetsuite" trim="true" xpath="extIDInNetsuite"/>
 </Context>
 ]]></attr>
 <attr name="_data_format"><![CDATA[MAP]]></attr>
@@ -53,9 +50,7 @@ output.AmountInNetsuite = input.AmountInNetsuite;
 output.AmountInSFDC = input.AmountInSFDC;
 output.IDInNetsuite = input.IDInNetsuite;
 output.IDInSFDC = input.IDInSFDC;
-output.Name = input.Name;
-output.extIDInNetsuite = input.extIDInNetsuite;
-]]></attr>
+output.Name = input.Name;]]></attr>
 </Node>
 <Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="4f0afa5c-d65b-4d5b-92d5-86fb0f553d52" outPort="Port 0 (out)" toNode="FOREACH_OPPORTUNITY_OPPORTUNITY_CSV:0"/>
 <Edge debugMode="true" fromNode="FOREACH_OPPORTUNITY_OPPORTUNITY_CSV:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="00fab57f-a4ec-4e73-a14b-02f4da1a319b" outPort="Port 0 (out)" toNode="DATA_WRITER0:0"/>

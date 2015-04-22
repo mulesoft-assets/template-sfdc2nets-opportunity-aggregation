@@ -52,8 +52,7 @@ public class OpportunitiesMerger {
 				mergedOpportunityList.add(mergedOpportunity);
 			}
 			mergedOpportunity.put("IDInNetsuite", netsuiteOpportunity.get("internalId"));
-			mergedOpportunity.put("AmountInNetsuite",  netsuiteOpportunity.get("projectedTotal"));
-			mergedOpportunity.put("extIDInNetsuite", netsuiteOpportunity.get("externalId"));
+			mergedOpportunity.put("AmountInNetsuite",  netsuiteOpportunity.get("projectedTotal"));		
 		}
 				
 		return mergedOpportunityList;
@@ -61,22 +60,18 @@ public class OpportunitiesMerger {
 	
 	/**
 	 * Finds Opportunity in the list of Opportunity objects (Maps). The needle is always Opportunity from Netsuite system.
-	 * Haystack can contain opportunities from both systems. The objects are considered the same if externalID of Netsuite
-	 * Opportunity is the same as Id of Salesforce Opportunity
+	 * Haystack can contain opportunities from both systems. The objects are considered the same if names are equal
 	 * @param needle Opportunity to search for in haystack
 	 * @param haystack The list of Opportunities (Maps)
 	 * @return
 	 */
 	private Map<String, String> findOpportunityInList(Map<String, String> needle, List<Map<String, String>> haystack) {
-		if (!needle.containsKey("externalId")) {
+		if (!needle.containsKey("title")) {
 			return null;
 		}
 		
 		for (Map<String, String> opportunity : haystack) {
-			
-			
-			
-			if (opportunity.containsKey("IDInSFDC") && opportunity.get("IDInSFDC").equals(needle.get("externalId"))) {
+			if (opportunity.get("Name") != null && opportunity.get("Name").equals(needle.get("title"))) {
 				return opportunity;
 			}
 		}
@@ -94,7 +89,6 @@ public class OpportunitiesMerger {
 		mergedOpportunity.put("AmountInSFDC", "");
 		mergedOpportunity.put("IDInNetsuite", "");
 		mergedOpportunity.put("AmountInNetsuite", "");
-		mergedOpportunity.put("extIDInNetsuite", "");
 		return mergedOpportunity;
 	}
 

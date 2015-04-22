@@ -249,28 +249,7 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 		opportunity.put("entity", ref);
 		
 		return opportunity;
-	}
-	
-	
-	/**
-	 * Builds object used to create NetSuite Opportunity. Customer ID is required to create Opportunity in NetSuite.
-	 * @return Map to be used with NetSuite connector to create customer.
-	 */
-	@Deprecated
-	private Map<String, Object> buildNetsuiteCustomer() {	
-		Map<String, Object> customer = new HashMap<String, Object>();
-		
-		// reference to subsidiary
-		RecordRef ref = new RecordRef();
-		ref.setType(RecordType.SUBSIDIARY);
-		ref.setInternalId("1");
-		
-		customer.put("subsidiary", ref); // maybe use property to define outside of program
-		customer.put("companyName", buildUniqueName(TEMPLATE_NAME, "TestCustomer"));
-		
-		return customer;
-	}
-	
+	}	
 	
 	/**
 	 * Builds unique opportunity name for testing purposes.
