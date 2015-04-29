@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule 
-xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" 
+<mule  
 xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" 
 xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp"
 xmlns:http="http://www.mulesoft.org/schema/mule/http" 
@@ -13,16 +12,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
-http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd">
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
     
+   <!-- 	In this file you should declare all your inbound endpoints and from here control the access to your application -->
    
     <flow name="triggerFlow">
         <http:listener config-ref="HTTP" path="/generatereport" doc:name="HTTP"/>
         <flow-ref name="mainFlow" doc:name="mainFlow" doc:description="mainFlow"/>
     </flow>
-
-	<!-- 	In this file you should declare all your inbound endpoints and from here controll the access to your application -->
 
     
      <flow name="outboundFlow"  doc:description="This is the simpliest output point to push the result of the data processing. 

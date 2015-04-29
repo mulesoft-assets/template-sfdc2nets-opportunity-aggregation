@@ -175,7 +175,7 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + attachment.name `opportunities_report`
 
 # API Calls <a name="apicalls"/>
-Salesforce imposes limits on the number of API Calls that can be made. However, we make API call to Salesforce only once during migration.
+Salesforce imposes limits on the number of API Calls that can be made. However, we make API call to Salesforce only once during aggregation.
 
 
 # Customize It!<a name="customizeit"/>
