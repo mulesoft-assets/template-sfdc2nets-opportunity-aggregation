@@ -28,8 +28,8 @@ import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.templates.builders.SfdcObjectBuilder;
 
 import com.google.common.collect.Lists;
-import com.netsuite.webservices.platform.core_2014_1.RecordRef;
-import com.netsuite.webservices.platform.core_2014_1.types.RecordType;
+import com.netsuite.webservices.platform.core.RecordRef;
+import com.netsuite.webservices.platform.core.types.RecordType;
 import com.sforce.soap.partner.SaveResult;
 
 import de.schlichtherle.io.FileInputStream;
