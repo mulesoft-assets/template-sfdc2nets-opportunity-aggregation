@@ -7,6 +7,7 @@
 package org.mule.templates.integration;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,8 +32,6 @@ import com.google.common.collect.Lists;
 import com.netsuite.webservices.platform.core.RecordRef;
 import com.netsuite.webservices.platform.core.types.RecordType;
 import com.sforce.soap.partner.SaveResult;
-
-import de.schlichtherle.io.FileInputStream;
 
 /**
  * The objective of this class is to validate the correct behavior of the flows
