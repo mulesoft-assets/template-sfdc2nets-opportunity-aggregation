@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,9 +23,11 @@ import org.mule.api.transformer.TransformerException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OpportunitiesMergerTest {
+	
+	private static final Logger LOGGER = LogManager.getLogger(OpportunitiesMergerTest.class);
+		
 	@Mock
 	private MuleContext muleContext;
-
 
 	/**
 	 * Tests the merging operation. The two lists should be merged into one and opportunities which represent the same object should be combined.
@@ -31,7 +35,6 @@ public class OpportunitiesMergerTest {
 	 * @throws TransformerException
 	 */
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testMerge() throws TransformerException {
 		List<Map<String, String>> opportunitiesFromSFDC = createSFDCOpportunityList(0, 1);
 		List<Map<String, String>> opportunitiesFromNetsuite = createNetsuiteOpportunityList(1, 2);
@@ -39,9 +42,9 @@ public class OpportunitiesMergerTest {
 		OpportunitiesMerger merger = new OpportunitiesMerger();
 		List<Map<String, String>> mergedList = (List<Map<String, String>>) merger.mergeList(opportunitiesFromSFDC, opportunitiesFromNetsuite);
 
-		System.out.println("\n" + opportunitiesFromSFDC);
-		System.out.println("\n" + opportunitiesFromNetsuite);
-		System.out.println("\n" + mergedList);
+		LOGGER.info("\n" + opportunitiesFromSFDC);
+		LOGGER.info("\n" + opportunitiesFromNetsuite);
+		LOGGER.info("\n" + mergedList);
 
 		Assert.assertEquals("The merged list obtained is not as expected", createExpectedList(), mergedList);
 	}

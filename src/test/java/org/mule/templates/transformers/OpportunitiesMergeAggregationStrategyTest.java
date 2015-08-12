@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,8 +30,10 @@ import com.google.common.collect.Lists;
 @RunWith(MockitoJUnitRunner.class)
 public class OpportunitiesMergeAggregationStrategyTest extends AbstractTemplateTestCase {
 
+	private static final Logger LOGGER = LogManager.getLogger(OpportunitiesMergeAggregationStrategyTest.class);
+	
 	@Mock
-	private MuleContext muleContext;
+	private MuleContext muleContext;	
 	
 	/**
 	 * Tests the aggregation strategy. The two lists should be merged into one and opportunities which represent the same object should be combined.
@@ -58,7 +62,7 @@ public class OpportunitiesMergeAggregationStrategyTest extends AbstractTemplateT
 		OpportunitiesMergeAggregationStrategy sfdcOpportunityMerge = new OpportunitiesMergeAggregationStrategy();
 		List<Map<String, String>> mergedList = Lists.newArrayList((Iterator<Map<String, String>>) sfdcOpportunityMerge.aggregate(aggregationContext).getMessage().getPayload());
 
-		System.out.println(mergedList);
+		LOGGER.info(mergedList);
 		Assert.assertEquals("The merged list obtained is not as expected", createExpectedList(), mergedList);
 
 	}

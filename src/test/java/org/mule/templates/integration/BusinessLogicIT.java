@@ -75,7 +75,6 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 		deleteTestOpportunityFromSFDC(testSfdcOpportunity);
 		deleteTestOpportunityFromNetsuite(testNetsuiteOpportunity);
 	}
-
 	
 	/**
 	 * Tests the core logic of this template. It creates new test opportunities for both systems and verifies that both make it to the merged list.
@@ -85,14 +84,8 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testGatherDataFlow() throws Exception {
-		// initialise core flow
-		SubflowInterceptingChainLifecycleWrapper flow = getSubFlow("gatherDataFlow");
-		flow.setMuleContext(muleContext);
-		flow.initialise();
-		flow.start();
-		
-		//process it
-		MuleEvent event = flow.process(getTestEvent("", MessageExchangePattern.REQUEST_RESPONSE));
+		// Initialize core flow and process it
+		MuleEvent event = runFlow("gatherDataFlow");
 		
 		// convert to list and make assertions
 		List<Map<String, Object>> mergedOpportunityList = Lists.newArrayList((Iterator<Map<String, Object>>)event.getMessage().getPayload());
@@ -158,7 +151,6 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 	 * Creates test opportunity object in NetSuite system.
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
 	private void createTestOpportunityInNetsuite() throws Exception {
 
 		testNetsuiteOpportunity = buildNetsuiteOpportunity(TEST_CUSTOMER_ID); 
