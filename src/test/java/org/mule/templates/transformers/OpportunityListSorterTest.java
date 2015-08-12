@@ -16,11 +16,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mule.DefaultMuleMessage;
 import org.mule.api.MuleContext;
 import org.mule.api.MuleMessage;
 import org.mule.api.transformer.TransformerException;
+import org.mule.config.DefaultMuleConfiguration;
 
 import com.google.common.collect.Lists;
 
@@ -43,7 +45,8 @@ public class OpportunityListSorterTest {
 	 */
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testSort() throws TransformerException {
+	public void testSort() throws TransformerException {		
+		Mockito.when(muleContext.getConfiguration()).thenReturn(new DefaultMuleConfiguration());
 		MuleMessage message = new DefaultMuleMessage(createOriginalList().iterator(), muleContext);
 
 		OpportunityListSorter transformer = new OpportunityListSorter();

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:netsuite="http://www.mulesoft.org/schema/mule/netsuite" version="EE-3.6.1" 
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:netsuite="http://www.mulesoft.org/schema/mule/netsuite" version="EE-3.7.1" 
     xmlns="http://www.mulesoft.org/schema/mule/core" 
-    xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" 
     xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
     xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
     xmlns:spring="http://www.springframework.org/schema/beans" 
@@ -11,28 +10,39 @@
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
-http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
-http://www.mulesoft.org/schema/mule/netsuite http://www.mulesoft.org/schema/mule/netsuite/current/mule-netsuite.xsd">
+http://www.mulesoft.org/schema/mule/netsuite http://www.mulesoft.org/schema/mule/netsuite/current/mule-netsuite.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
 
-    <data-mapper:config name="Map_To_CSV" transformationGraphPath="map_to_csv.grf" doc:name="Map_To_CSV"/>
 
     <flow doc:description="This flow is the entry point to the Kick business logic.  This flow should control the direction of the application, and it should be called by the different endpoints that your Kick exposes to trigger it." name="mainFlow">
-        <flow-ref doc:name="gatherDataFlow" name="gatherDataFlow"/>
-        <flow-ref doc:name="formatOutputFlow" name="formatOutputFlow"/>
-        <flow-ref doc:name="outboundFlow" name="outboundFlow"/>
+        <flow-ref doc:name="Call gatherDataFlow" name="gatherDataFlow"/>
+        <flow-ref doc:name="Call formatOutputFlow" name="formatOutputFlow"/>
+        <flow-ref doc:name="Call outboundFlow" name="outboundFlow"/>
         <exception-strategy doc:name="Reference Exception Strategy" ref="defaultChoiceExceptionStrategy"/>
     </flow>
-    <sub-flow name="gatherDataFlow">
+    <flow name="gatherDataFlow">
         <scatter-gather doc:name="Scatter-Gather">
             <custom-aggregation-strategy class="org.mule.templates.transformers.OpportunitiesMergeAggregationStrategy"/>
-            <sfdc:query config-ref="Salesforce" query="dsql:SELECT Id, Name, Amount FROM Opportunity" doc:name="query all opportunities from SalesForce"/>
-            <netsuite:query-records config-ref="Netsuite" query="dsql:SELECT projectedTotal, title, internalId
-FROM OPPORTUNITY" doc:name="query all opportunities from Netsuite"/>        </scatter-gather>
-    </sub-flow>
-    <sub-flow name="formatOutputFlow">
+            <sfdc:query config-ref="Salesforce" query="dsql:SELECT Id, Name, Amount FROM Opportunity" doc:name="Query all opportunities from SalesForce"/>
+            <netsuite:query-records config-ref="NetSuite__Login_Authentication" query="dsql:SELECT projectedTotal, title, internalId
+FROM OPPORTUNITY" doc:name="Query all opportunities from Netsuite"/>       
+		 </scatter-gather>
+    </flow>
+    <flow name="formatOutputFlow">
         <custom-transformer class="org.mule.templates.transformers.OpportunityListSorter" doc:name="Custom component to sort opportunities list"/>
-        <data-mapper:transform config-ref="Map_To_CSV" doc:name="Map To CSV"/>
-
+        <dw:transform-message doc:name="Transform Map to CSV">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output text/csv header=true
+---
+payload map {
+	"ID in Netsuite" : $.IDInNetsuite,
+	"ID in SFDC": $.IDInSFDC,
+	"Amount in Netsuite": $.AmountInNetsuite,
+	"Amount in SFDC": $.AmountInSFDC,
+	"Name" : $.Name
+}]]></dw:set-payload>
+        </dw:transform-message>
         <object-to-string-transformer doc:name="CSV Output Object to String"/>
-    </sub-flow>
+    </flow>
+
 </mule>
