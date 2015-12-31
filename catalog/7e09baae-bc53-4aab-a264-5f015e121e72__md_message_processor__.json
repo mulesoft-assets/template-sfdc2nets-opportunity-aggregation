@@ -1,0 +1,11 @@
+{
+    "inputMessageMetadata": {},
+    "outputMessageMetadata": {
+        "messagePayload": {
+            "connectorName": "#_custom_mule_metadata_type_#",
+            "typeId": "OpportunitySearchBasic"
+        }
+    },
+    "id": "7e09baae-bc53-4aab-a264-5f015e121e72",
+    "version": "5.2.0.0"
+}

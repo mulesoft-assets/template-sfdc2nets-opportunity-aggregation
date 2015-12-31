@@ -36,11 +36,11 @@ public class OpportunitiesMergerTest {
 	 */
 	@Test
 	public void testMerge() throws TransformerException {
-		List<Map<String, String>> opportunitiesFromSFDC = createSFDCOpportunityList(0, 1);
-		List<Map<String, String>> opportunitiesFromNetsuite = createNetsuiteOpportunityList(1, 2);
+		List<Map<String, Object>> opportunitiesFromSFDC = createSFDCOpportunityList(0, 1);
+		List<Map<String, Object>> opportunitiesFromNetsuite = createNetsuiteOpportunityList(1, 2);
 
 		OpportunitiesMerger merger = new OpportunitiesMerger();
-		List<Map<String, String>> mergedList = (List<Map<String, String>>) merger.mergeList(opportunitiesFromSFDC, opportunitiesFromNetsuite);
+		List<Map<String, Object>> mergedList = (List<Map<String, Object>>) merger.mergeList(opportunitiesFromSFDC, opportunitiesFromNetsuite);
 
 		LOGGER.info("\n" + opportunitiesFromSFDC);
 		LOGGER.info("\n" + opportunitiesFromNetsuite);
@@ -105,8 +105,8 @@ public class OpportunitiesMergerTest {
 	 * @param end ID of last opportunity
 	 * @return List of opportunity Map objects
 	 */
-	private List<Map<String, String>> createSFDCOpportunityList(int start, int end) {
-		List<Map<String, String>> oppList = new ArrayList<Map<String, String>>();
+	private List<Map<String, Object>> createSFDCOpportunityList(int start, int end) {
+		List<Map<String, Object>> oppList = new ArrayList<Map<String, Object>>();
 		for (int i = start; i <= end; i++) {
 			oppList.add(createSFDCOpportunity(i));
 		}
@@ -118,8 +118,8 @@ public class OpportunitiesMergerTest {
 	 * @param sequence Number to be used for both IDs and title generation.
 	 * @return Map representing the opportunity as if it is received from Salesforce system.
 	 */
-	private Map<String, String> createSFDCOpportunity(int sequence) {
-		Map<String, String> opportunity = new HashMap<String, String>();
+	private Map<String, Object> createSFDCOpportunity(int sequence) {
+		Map<String, Object> opportunity = new HashMap<String, Object>();
 
 		opportunity.put("Id", new Integer(sequence).toString());
 		opportunity.put("Name", "SomeName_" + sequence);
@@ -136,8 +136,8 @@ public class OpportunitiesMergerTest {
 	 * @param end ID of last opportunity
 	 * @return List of opportunity Map objects
 	 */
-	private List<Map<String, String>> createNetsuiteOpportunityList(int start, int end) {
-		List<Map<String, String>> oppList = new ArrayList<Map<String, String>>();
+	private List<Map<String, Object>> createNetsuiteOpportunityList(int start, int end) {
+		List<Map<String, Object>> oppList = new ArrayList<Map<String, Object>>();
 		for (int i = start; i <= end; i++) {
 			oppList.add(createNetsuiteOpportunity(i));
 		}
@@ -149,8 +149,8 @@ public class OpportunitiesMergerTest {
 	 * @param sequence Number to be used for both IDs and title generation.
 	 * @return Map representing the opportunity as if it is received from Netsuite system.
 	 */
-	private Map<String, String> createNetsuiteOpportunity(int sequence) {
-		Map<String, String> opportunity = new HashMap<String, String>();
+	private Map<String, Object> createNetsuiteOpportunity(int sequence) {
+		Map<String, Object> opportunity = new HashMap<String, Object>();
 
 		opportunity.put("internalId", new Integer(sequence).toString()); 
 		opportunity.put("title", "SomeName_" + sequence);
