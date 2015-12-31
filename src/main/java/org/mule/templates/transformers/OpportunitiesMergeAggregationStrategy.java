@@ -7,7 +7,6 @@
 package org.mule.templates.transformers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -45,12 +44,12 @@ public class OpportunitiesMergeAggregationStrategy implements AggregationStrateg
 		MuleMessage message = originalEvent.getMessage();
 		
 		// events are ordered so the event index corresponds to the index of each route
-		List<Map<String, String>> listSFDC = getList(muleEventsWithoutException, 0);
-		List<Map<String, String>> listNetsuite = getList(muleEventsWithoutException, 1);
+		List<Map<String, Object>> listSFDC = getList(muleEventsWithoutException, 0);
+		List<Map<String, Object>> listNetsuite = getList(muleEventsWithoutException, 1);
 
 		
 		OpportunitiesMerger sfdcOpportunityMerger = new OpportunitiesMerger();
-		List<Map<String, String>> mergedOpportunityList = sfdcOpportunityMerger.mergeList(listSFDC, listNetsuite);
+		List<Map<String, Object>> mergedOpportunityList = sfdcOpportunityMerger.mergeList(listSFDC, listNetsuite);
 		
 		message.setPayload(mergedOpportunityList.iterator());
 		return new DefaultMuleEvent(message, originalEvent);
@@ -63,33 +62,16 @@ public class OpportunitiesMergeAggregationStrategy implements AggregationStrateg
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private List<Map<String, String>> getList(List<MuleEvent> events, int index) {
+	private List<Map<String, Object>> getList(List<MuleEvent> events, int index) {
 		Iterator<Map<String, Object>> iterator = (Iterator<Map<String, Object>>) events.get(index).getMessage().getPayload();
-		List<Map<String,String>> list = new ArrayList<>();
+		List<Map<String,Object>> list = new ArrayList<>();
 		
 		// NetSuite returns some values as not String objects
 		while (iterator.hasNext()) {			
 			Map<String, Object> originalMap = (Map<String, Object>) iterator.next();
-			list.add(convertMap(originalMap));
+			list.add(originalMap);
 		}
 		return list;
 	}
 	
-	/**
-	 * Converts the data to Map containing only String values for easier handling.
-	 * @param originalMap Map as retrieved from the connectors
-	 * @return Map which has data converted to Strings
-	 */
-	private Map<String,String> convertMap(Map<String,Object> originalMap){
-		Map<String, String> newMap = new HashMap<String,String>(); // new Map with strings only
-		for (Map.Entry<String, Object> entry : originalMap.entrySet()) {	
-			if (entry.getValue() instanceof Double) {
-				newMap.put(entry.getKey(), String.valueOf(entry.getValue()));
-			}else {
-				newMap.put(entry.getKey(), (String) entry.getValue());
-			}
-		}
-		return newMap;
-	}
-
 }

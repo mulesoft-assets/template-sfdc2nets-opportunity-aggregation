@@ -158,6 +158,7 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + nets.password `netsuite_password`
 + nets.account `YHCtmLGOdrjkKvBruTKaiLan`
 + nets.roleId `1`
++ nets.applicationId `77EBCBD6-AF9F-11E5-BF7F-FEFF819CDC9F`
 
 #### SMTP Services configuration
 

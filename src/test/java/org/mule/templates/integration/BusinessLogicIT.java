@@ -117,6 +117,7 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 	public void testMainFlow() throws Exception {
 		MuleEvent event = runFlow("mainFlow");
 
+		System.err.println(event.getMessage().getPayload());
 		Assert.assertTrue("The payload should not be null.", EMAIL_BODY.equals(event.getMessage().getPayload()));
 	}
 

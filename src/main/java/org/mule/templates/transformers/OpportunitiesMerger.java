@@ -29,12 +29,12 @@ public class OpportunitiesMerger {
 	 *            opportunities from Netsuite
 	 * @return a list with the merged content of the to input lists
 	 */
-	public List<Map<String, String>> mergeList(List<Map<String, String>> opportunitiesFromSFDC, List<Map<String, String>> opportunitiesFromNetsuite) {
-		List<Map<String, String>> mergedOpportunityList = new ArrayList<Map<String, String>>();
+	public List<Map<String, Object>> mergeList(List<Map<String, Object>> opportunitiesFromSFDC, List<Map<String, Object>> opportunitiesFromNetsuite) {
+		List<Map<String, Object>> mergedOpportunityList = new ArrayList<Map<String, Object>>();
 		
 		// Put all opportunities from SFDC in the merged OpportunityList
-		for (Map<String, String> sfdcOpportunity : opportunitiesFromSFDC) {
-			Map<String, String> mergedOpportunity = createBlankMergedOpportunity();
+		for (Map<String, Object> sfdcOpportunity : opportunitiesFromSFDC) {
+			Map<String, Object> mergedOpportunity = createBlankMergedOpportunity();
 			mergedOpportunity.put("Name", sfdcOpportunity.get("Name"));
 			mergedOpportunity.put("IDInSFDC", sfdcOpportunity.get("Id"));
 			mergedOpportunity.put("AmountInSFDC", sfdcOpportunity.get("Amount"));
@@ -42,8 +42,8 @@ public class OpportunitiesMerger {
 		}
 
 		// Add the Opportunities from NetSuite and update the existing ones
-		for (Map<String, String> netsuiteOpportunity : opportunitiesFromNetsuite) {
-			Map<String, String> mergedOpportunity = findOpportunityInList(netsuiteOpportunity, mergedOpportunityList);
+		for (Map<String, Object> netsuiteOpportunity : opportunitiesFromNetsuite) {
+			Map<String, Object> mergedOpportunity = findOpportunityInList(netsuiteOpportunity, mergedOpportunityList);
 					
 			//create blank Opportunity if not found in merged list
 			if (mergedOpportunity == null) {
@@ -65,12 +65,12 @@ public class OpportunitiesMerger {
 	 * @param haystack The list of Opportunities (Maps)
 	 * @return
 	 */
-	private Map<String, String> findOpportunityInList(Map<String, String> needle, List<Map<String, String>> haystack) {
+	private Map<String, Object> findOpportunityInList(Map<String, Object> needle, List<Map<String, Object>> haystack) {
 		if (!needle.containsKey("title")) {
 			return null;
 		}
 		
-		for (Map<String, String> opportunity : haystack) {
+		for (Map<String, Object> opportunity : haystack) {
 			if (opportunity.get("Name") != null && opportunity.get("Name").equals(needle.get("title"))) {
 				return opportunity;
 			}
@@ -82,8 +82,8 @@ public class OpportunitiesMerger {
 	 * Creates empty merged Opportunity Map.
 	 * @return Map object representing the merged data.
 	 */
-	private Map<String, String> createBlankMergedOpportunity() {
-		Map<String, String> mergedOpportunity = new HashMap<String, String>();
+	private Map<String, Object> createBlankMergedOpportunity() {
+		Map<String, Object> mergedOpportunity = new HashMap<String, Object>();
 		mergedOpportunity.put("Name", "");
 		mergedOpportunity.put("IDInSFDC", "");
 		mergedOpportunity.put("AmountInSFDC", "");
