@@ -43,7 +43,7 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
         <custom-transformer class="org.mule.templates.transformers.OpportunityListSorter" doc:name="Custom component to sort opportunities list"/>
         <dw:transform-message doc:name="Transform Map to CSV" metadata:id="bdd5c33e-a1f2-47b8-b2c3-946c6591d769">
             <dw:set-payload><![CDATA[%dw 1.0
-%output application/java
+%output application/csv
 ---
 payload map {
 	"ID in Netsuite" : $.IDInNetsuite,
