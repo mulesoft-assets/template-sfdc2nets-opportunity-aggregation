@@ -44,7 +44,7 @@ var opportunitiesFromNetsuite = payload["1"].payload map (opportunity) -> {
 	"IDInNetsuite": opportunity.internalId,
 	"AmountInNetsuite": opportunity.projectedTotal
 }
-var mergedOpportunites =  (
+var mergedOpportunities =  (
                 opportunitiesFromSfdc map ((item) -> item mergeWith ((opportunitiesFromNetsuite filter ($.Name == item.Name))[0] 
                     default {IDInNetsuite: "", AmountInNetsuite: ""}
                 ))
@@ -56,14 +56,20 @@ var mergedOpportunites =  (
             ) distinctBy $.Name
 fun sortBySourceExistence (opportunities) = ((opportunities map (opportunity) -> (
         opportunity ++ {
-            sortValue:  if ((opportunity.IDInA != "") and (opportunity.IDInB == "")) 1 
-                        else if ((opportunity.IDInB != "") and (opportunity.IDInA == "")) 2 
+            sortValue:  if ((opportunity.IDInSFDC != "") and (opportunity.IDInNetsuite == "")) 1 
+                        else if ((opportunity.IDInNetsuite != "") and (opportunity.IDInSFDC == "")) 2 
                         else 3
         }
     )
 ) orderBy $.sortValue ) map $ -"sortValue"
 ---
-sortBySourceExistence(mergedOpportunites)]]></ee:set-payload>
+sortBySourceExistence(mergedOpportunities) map (opportunity) -> {
+	"Name": opportunity.Name,
+	"IDInSFDC": opportunity.IDInSFDC,
+	"AmountInSFDC": opportunity.AmountInSFDC,
+	"IDInNetsuite": opportunity.IDInNetsuite,
+	"AmountInNetsuite": opportunity.AmountInNetsuite
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<email:send config-ref="Gmail_SMTP" doc:name="Send migration result email"
