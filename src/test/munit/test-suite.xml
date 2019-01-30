@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+xmlns:netsuite="http://www.mulesoft.org/schema/mule/netsuite" 
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" 
+	xmlns="http://www.mulesoft.org/schema/mule/core" 
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/netsuite http://www.mulesoft.org/schema/mule/netsuite/current/mule-netsuite.xsd">
+	<munit:config name="test-suite.xml" doc:name="MUnit configuration"/>
+	<configuration-properties doc:name="Configuration properties"
+		doc:id="9ccff924-f3a9-422c-a218-11c91dde07b9" file="mule.test.properties" />
+	<munit:before-test name="test-suiteBefore_Test" description="Before tests actions" doc:id="39e6e14c-a9a4-4583-9e78-3c29ac6bf2c7" >
+		<ee:transform doc:name="Prepare test data" doc:id="cf5a70a5-cde9-42a4-bbe0-7bd8bcc2b9d4" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="testOpportunity1" ><![CDATA[%dw 2.0
+output application/java
+---
+{	
+	Name: "testOpportunity1" ++ randomInt(1000),
+	Amount: 123,
+    "StageName": "Stage",
+    "CloseDate": now()
+}]]></ee:set-variable>
+				<ee:set-variable variableName="testOpportunity2" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	Name: "testOpportunity2" ++ randomInt(1000),
+	Amount: 456,
+    "StageName": "Stage",
+    "CloseDate": now()
+}
+]]></ee:set-variable>
+				<ee:set-variable variableName="testOpportunity3" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	Name: "testOpportunity3" ++ randomInt(1000),
+	Amount: 789,
+    "StageName": "Stage",
+    "CloseDate": now()
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<salesforce:create type="Opportunity" doc:name="Create test Opportunities in Salesforce" doc:id="de60347c-5392-4ad3-b65a-83e2816afcc3" config-ref="Salesforce_Sfdc_A_config" >
+			<salesforce:records ><![CDATA[#[[vars.testOpportunity1, vars.testOpportunity2]]]]></salesforce:records>
+		</salesforce:create>
+<set-variable value="#[payload map ($.id)]" doc:name="Store Ids from Salesforce" doc:id="cb4aea48-fb8c-44f2-8ae8-3684d200cfb4" variableName="salesforceIds" />
+		<ee:transform doc:name="Mapping for creating for test1 Opportunity for NetSuite"
+						doc:id="cb0cd3fe-6d16-40c7-86ef-278041301abf">
+						<ee:message>
+							<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+	externalId 			: vars.salesforceIds[0],
+	title 				: vars.testOpportunity1.Name,
+	expectedCloseDate 	: now() as LocalDateTime {class: "java.time.LocalDateTime"},
+	entity 				: {
+		internalId		: p('netsuite.account.internalID'),
+		"type"			: 'CUSTOMER'
+	},
+	entityStatus		: {
+		internalId		: 13,
+		"type"			: 'CUSTOMER_STATUS'
+	}
+}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+<!-- 		<netsuite:delete-record doc:name="Delete record" doc:id="2c0c007b-04a0-472f-aa65-e0278e9b3860" config-ref="NetSuite_Config"> -->
+<!-- 		</netsuite:delete-record> -->
+		<netsuite:add-record recordType="OPPORTUNITY" doc:name="Create test1 Opportunity in NetSuite" doc:id="48532401-40cc-4166-890b-b2ab50a74452" config-ref="NetSuite_Config"/>
+		<set-variable value="#[payload.internalId]" doc:name="Store Id1 from Netsuite" doc:id="a92d0294-658c-4e4f-b621-41ba188e2797" variableName="netsuiteId1"/>
+<ee:transform doc:name="Mapping for creating test2 Opportunity for NetSuite"
+						doc:id="1fac4186-551e-46d9-9603-da0aa7128bfc">
+						<ee:message>
+							<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+	externalId 			: vars.salesforceIds[1],
+	title 				: vars.testOpportunity3.Name,
+	expectedCloseDate 	: now() as LocalDateTime {class: "java.time.LocalDateTime"},
+	entity 				: {
+		internalId		: p('netsuite.account.internalID'),
+		"type"			: 'CUSTOMER'
+	},
+	entityStatus		: {
+		internalId		: 13,
+		"type"			: 'CUSTOMER_STATUS'
+	}
+}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+		
+		<netsuite:add-record recordType="OPPORTUNITY" doc:name="Create test2 Opportunity in NetSuite" doc:id="068fec94-0444-4d90-b728-e98af4ddc2d5" config-ref="NetSuite_Config"/>
+		<set-variable value="#[payload.internalId]" doc:name="Store Id2 from Netsuite" doc:id="62dcbfac-eaf0-435a-8e99-16acf4e62abb" variableName="netsuiteId2"/>
+		<munit-tools:mock-when doc:name="Mock email processor to avoid sending email" doc:id="24dcaf70-ad5e-440c-b563-257b6e717b2d" processor="email:send">
+				<munit-tools:then-return />
+			</munit-tools:mock-when>
+	</munit:before-test>
+	<munit:test name="test-suite-businesslogicFlowTest" description="Test" doc:id="831b0858-e28d-48e9-9fb4-06f6e43d6095" >
+		<munit:execution >
+			<flow-ref doc:name="businesslogicFlow" doc:id="2ffdaa97-4a6a-45dd-901a-9409b93672d2" name="businesslogicFlow"/>
+			<ee:transform doc:name="Filtering test records" doc:id="dde950b9-079d-44cd-9a6d-2e61bbce7eff">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+payload filter ($.Name == vars.testOpportunity1.Name or 
+				$.Name == vars.testOpportunity2.Name or 
+				$.Name == vars.testOpportunity3.Name
+)]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert number of records" doc:id="2a4ff76b-3cf9-41b2-b0cf-0923851acf11" expression="#[sizeOf(payload)]" is="#[MunitTools::equalTo(3)]" message="Assert number of records"/>
+			<munit-tools:assert-that doc:name="Assert that name in first record is correct" doc:id="3dce402a-e398-404d-9ccc-b0b0fd8ab39b" is="#[MunitTools::equalTo(vars.testOpportunity2.Name)]" expression="#[payload[0].Name]" message="Assert that name in first record is correct"/>
+			<munit-tools:assert-that doc:name="Assert that first record exists in Salesforce" doc:id="2d2bb2d7-0295-4014-9d2a-5dbb667cb2ca" expression="#[payload[0].IDInSFDC]" is="#[MunitTools::not(MunitTools::isEmptyOrNullString())]" message="Assert that first record exists in Salesforce"/>
+			<munit-tools:assert-that doc:name="Assert that first record does not exist in NetSuite" doc:id="242ce545-5fae-4290-970d-c3bdd03ffe3b" expression="#[payload[0].IDInNetsuite]" is="#[MunitTools::isEmptyOrNullString()]" message="Assert that first record does not exist in NetSuite"/>
+			<munit-tools:assert-that doc:name="Assert that name in second record is correct" doc:id="ed787866-3956-48c3-82a2-16edc3fc36b9" is="#[MunitTools::equalTo(vars.testOpportunity3.Name)]" expression="#[payload[1].Name]" message="Assert that name in second record is correct"/>
+			<munit-tools:assert-that doc:name="Assert that secord record does not exist in Salesforce" doc:id="77d66ac3-d512-403a-8e0b-9afa887b3c50" expression="#[payload[1].IDInSFDC]" is="#[MunitTools::isEmptyOrNullString()]" message="Assert that secord record does not exist in Salesforce"/>
+			<munit-tools:assert-that doc:name="Assert that secord record exists in NetSuite" doc:id="b74eceb7-9bab-4e7b-8b8d-685c9941b6c1" is="#[MunitTools::not(MunitTools::isEmptyOrNullString())]" expression="#[payload[1].IDInNetsuite]" message="Assert that secord record exists in NetSuite"/>
+			<munit-tools:assert-that doc:name="Assert that name in third record is correct" doc:id="ebfe0571-b56c-4e32-81a6-468bc9ffdbd0" is="#[MunitTools::equalTo(vars.testOpportunity1.Name)]" expression="#[payload[2].Name]" message="Assert that name in third record is correct"/>
+			<munit-tools:assert-that doc:name="Assert that third record exists in Salesforce" doc:id="dd634dc6-2074-4821-84a1-10c60b88dd7a" expression="#[payload[2].IDInSFDC]" is="#[MunitTools::not(MunitTools::isEmptyOrNullString())]" message="Assert that third record exists in Salesforce"/>
+			<munit-tools:assert-that doc:name="Assert that third record exists in NetSuite" doc:id="ce4920c6-96e4-4867-9dbb-74bdfe285e54" expression="#[payload[2].IDInNetsuite]" is="#[MunitTools::not(MunitTools::isEmptyOrNullString())]" message="Assert that third record exists in NetSuite"/>
+		</munit:validation>
+	</munit:test>
+	<munit:after-test name="test-suiteAfter_Test" description="After tests actions" doc:id="9d627beb-2f18-4864-8132-29718456d3a9" >
+		<salesforce:delete doc:name="Delete source Opportunities in Salesforce" doc:id="0ad84a41-0471-436c-910e-9ad30476fd96" config-ref="Salesforce_Sfdc_A_config">
+				<salesforce:delete-ids><![CDATA[#[vars.salesforceIds]]]></salesforce:delete-ids>
+			</salesforce:delete>
+		<ee:transform doc:name="Mapping for deleteing test1 Opportunity for NetSuite" doc:id="e2d99e42-84d7-46cb-88e5-412eda52c780" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	internalId: vars.netsuiteId1,
+	"type": "OPPORTUNITY"
+} as Object {
+	class : "org.mule.module.netsuite.extension.api.RecordRef"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<netsuite:delete-record doc:name="Delete source test1 Opportunities in NetSuite" doc:id="0b8ea28a-f0a0-41e8-a2a1-dc1ef47ecf34" config-ref="NetSuite_Config">
+		</netsuite:delete-record>
+		<ee:transform doc:name="Mapping for deleteing test2 Opportunity for NetSuite" doc:id="31b194be-970b-484e-a4f3-fac388ae6cee" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	internalId: vars.netsuiteId2,
+	"type": "OPPORTUNITY"
+} as Object {
+	class : "org.mule.module.netsuite.extension.api.RecordRef"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<netsuite:delete-record doc:name="Delete source test2 Opportunities in NetSuite" doc:id="9ff4ed32-1c05-4a5a-b561-e0bb4825eb78" config-ref="NetSuite_Config">
+		</netsuite:delete-record>
+	</munit:after-test>
+</mule>
