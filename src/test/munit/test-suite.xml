@@ -141,7 +141,7 @@ payload filter ($.Name == vars.testOpportunity1.Name or
 		<salesforce:delete doc:name="Delete source Opportunities in Salesforce" doc:id="0ad84a41-0471-436c-910e-9ad30476fd96" config-ref="Salesforce_Sfdc_A_config">
 				<salesforce:delete-ids><![CDATA[#[vars.salesforceIds]]]></salesforce:delete-ids>
 			</salesforce:delete>
-		<ee:transform doc:name="Mapping for deleteing test1 Opportunity for NetSuite" doc:id="e2d99e42-84d7-46cb-88e5-412eda52c780" >
+		<ee:transform doc:name="Mapping for deleting test1 Opportunity for NetSuite" doc:id="e2d99e42-84d7-46cb-88e5-412eda52c780" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/java
@@ -156,7 +156,7 @@ output application/java
 		</ee:transform>
 		<netsuite:delete-record doc:name="Delete source test1 Opportunities in NetSuite" doc:id="0b8ea28a-f0a0-41e8-a2a1-dc1ef47ecf34" config-ref="NetSuite_Config">
 		</netsuite:delete-record>
-		<ee:transform doc:name="Mapping for deleteing test2 Opportunity for NetSuite" doc:id="31b194be-970b-484e-a4f3-fac388ae6cee" >
+		<ee:transform doc:name="Mapping for deleting test2 Opportunity for NetSuite" doc:id="31b194be-970b-484e-a4f3-fac388ae6cee" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/java
