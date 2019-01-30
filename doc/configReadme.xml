@@ -38,7 +38,6 @@ After this, to trigger the use case you just need to hit the local HTTP endpoint
 + sfdc.a.username `bob.dylan@org`
 + sfdc.a.password `DylanPassword123`
 + sfdc.a.securityToken `avsfwCUl7apQs56Xq2AKi3X`
-+ sfdc.a.url `https://login.salesforce.com/services/Soap/u/40.0`
 
 #### SMTP Services configuration
 + smtp.host `smtp.gmail.com`

@@ -102,7 +102,6 @@ To use this template, configure properties such as credentials, configurations, 
 - sfdc.a.username `PollyHedra@org`
 - sfdc.a.password `HedraPassword123`
 - sfdc.a.securityToken `avsfwCUl7apQs56Xq2AKi3X`
-- sfdc.a.url `https://login.salesforce.com/services/Soap/u/40.0`
 
 #### SMTP Services Configuration
 
