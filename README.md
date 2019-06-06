@@ -1,7 +1,7 @@
 
 # Template: Salesforce to Netsuite Opportunity Aggregation
 
-Aggregates opportunities from Salesforce and NetSuite into a CSV file. This basic pattern can be modified to collect from more or different sources and to produce formats other than CSV. You can trigger this manually or programmatically with an HTTP call. 
+Aggregates opportunities from Salesforce and NetSuite into a CSV file. This basic pattern can be modified to collect from more or different sources and to produce formats other than CSV. You can trigger this manually or programmatically with an HTTP call.
 
 ![b08dc2be-06f5-4254-b51c-43c4e1d4f5b6-image.png](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/b08dc2be-06f5-4254-b51c-43c4e1d4f5b6-image.png)
 
@@ -13,11 +13,11 @@ Using this template is subject to the conditions of this [MuleSoft License Agree
 
 ### Use Case
 
-As an administrator I want to aggregate opportunities from Salesforce and NetSuite instances and compare them to see which opportunities can only be found in one of the two and which opportunities are in both instances. 
+As an administrator I want to aggregate opportunities from Salesforce and NetSuite instances and compare them to see which opportunities can only be found in one of the two and which opportunities are in both instances.
 
 This template generates the result in the format of an email with an attached CSV Report.
 
-This template is a foundation for extracting data from the two systems, aggregating data, comparing values of fields for the objects, and generating a report of the differences. 
+This template is a foundation for extracting data from the two systems, aggregating data, comparing values of fields for the objects, and generating a report of the differences.
 
 This implementation retrieves opportunities from both Salesforce and Netsuite instances, compares them (opportunities match if the names are equal), and generates a CSV file that shows opportunities in Salesforce, opportunities in NetSuite, and opportunities present in both systems. The report is sent to a configured group of email addresses.
 
@@ -39,8 +39,8 @@ exceptionMessage='
 Account.Phone, Account.Rating, Account.RecordTypeId, Account.ShippingCity
 ^
 ERROR at Row:1:Column:486
-No such column 'RecordTypeId' on entity 'Account'. If you are attempting 
-to use a custom field, be sure to append the '__c' after the custom field 
+No such column 'RecordTypeId' on entity 'Account'. If you are attempting
+to use a custom field, be sure to append the '__c' after the custom field
 name. Reference your WSDL or the describe call for the appropriate names.'
 ]
 row='1'
@@ -71,7 +71,7 @@ After opening your template in Anypoint Studio, follow these steps to run it:
 
 Complete all properties in one of the property files, for example in mule.prod.properties
 
-and run your app with the corresponding environment variable to use it. To follow the example, this is `mule.env=prod`. 
+and run your app with the corresponding environment variable to use it. To follow the example, this is `mule.env=prod`.
 
 After this, to trigger the use case, browse to the local HTTP endpoint with the port you configured in your file. For example, if port `9090`, browse to `http://localhost:9090/generatereport` and this creates the CSV report and sends it to the configured e-mail addresses.
 
@@ -89,13 +89,13 @@ Anypoint Platform > Deploy on CloudHub.
 
 ## Properties to Configure
 
-To use this template, configure properties such as credentials, configurations, and more either in a properties file or in CloudHub as Environment Variables. 
+To use this template, configure properties such as credentials, configurations, and more either in a properties file or in CloudHub as Environment Variables.
 
 ### Application Configuration
 
 #### HTTP Connector Configuration
 
-- http.port `9090` 
+- http.port `9090`
 
 #### SalesForce Connector Configuration
 
@@ -125,6 +125,8 @@ To use this template, configure properties such as credentials, configurations, 
 - netsuite.account `YHCtmLGOdrjkKvBruTKaiLan`
 - netsuite.roleId `1`
 - netsuite.appId `42ABCBD6-AF9F-11E5-BF7F-FEFF819CDC9F`
+- netsuite.connectionTimeout `100000`
+- netsuite.readTimeout `100000`
 
 # API Calls
 
@@ -182,4 +184,3 @@ and transformed to CSV format. Final report in CSV format is sent to email, that
 This handles how your integration reacts depending on the different exceptions.
 
 This file provides error handling referenced by the main flow in the business logic.
-
