@@ -5,11 +5,11 @@
 	</placeholders>
 	<sections>
 		<section id="use_case">
-As an administrator I want to aggregate opportunities from Salesforce and NetSuite instances and compare them to see which opportunities can only be found in one of the two and which opportunities are in both instances. 
+As an administrator I want to aggregate opportunities from Salesforce and NetSuite instances and compare them to see which opportunities can only be found in one of the two and which opportunities are in both instances.
 
 For practical purposes this Template will generate the result in the format of an e-mail with attached CSV Report.
 
-This Template should serve as a foundation for extracting data from two systems, aggregating data, comparing values of fields for the objects, and generating a report on the differences. 
+This Template should serve as a foundation for extracting data from two systems, aggregating data, comparing values of fields for the objects, and generating a report on the differences.
 
 This implementation retrieves opportunities from both Salesforce and Netsuite instances, compares them (opportunities match if the names are equal), and generates a CSV file which shows opportunities in Salesforce, opportunities in NetSuite, and opportunities present in both systems. The report is then sent to a configured group of e-mail addresses.
 		</section>
@@ -18,7 +18,7 @@ This implementation retrieves opportunities from both Salesforce and Netsuite in
 To make this Anypoint Template run, there are certain preconditions that must be considered. All of them deal with the preparations in both systems, that must be made in order for all to run smoothly. **Failling to do so could lead to unexpected behavior of the template.**
 ]]>
 		</section>
-		
+
 		<section id="running_on_cloudhub">
 <![CDATA[
 Once your app is all set up and started, supposing you choose as domain name `sfdc2nets-opportunity-aggregation` to trigger the use case, you just need to hit `http://sfdc2nets-opportunity-aggregation.cloudhub.io/generatereport` and report will be sent to the e-mails configured.
@@ -31,8 +31,8 @@ After this, to trigger the use case you just need to hit the local HTTP endpoint
 		</section>
 		<section id="application_configuration">
 		<![CDATA[
-#### HTTP Connector configuration		
-+ http.port `9090` 
+#### HTTP Connector configuration
++ http.port `9090`
 
 #### SalesForce Connector configuration
 + sfdc.a.username `bob.dylan@org`
@@ -59,11 +59,13 @@ After this, to trigger the use case you just need to hit the local HTTP endpoint
 + netsuite.account `YHCtmLGOdrjkKvBruTKaiLan`
 + netsuite.roleId `1`
 + netsuite.appId `77EBCBD6-AF9F-11E5-BF7F-FEFF819CDC9F`
++ netsuite.connectionTimeout `100000`
++ netsuite.readTimeout `100000`
 ]]>
 		</section>
 		<section id="api_calls">
 		<![CDATA[
-Salesforce imposes limits on the number of API Calls that can be made. However, we make API call to Salesforce only once during aggregation. 
+Salesforce imposes limits on the number of API Calls that can be made. However, we make API call to Salesforce only once during aggregation.
 ]]>
 		</section>
 		<section id="default_endpoints_xml">
